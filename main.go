@@ -127,7 +127,7 @@ func main() {
 		usage()
 		os.Exit(1)
 	}
-	siteDir := flag.Arg(0)
+	siteDir := strings.Split(flag.Arg(0), "/")[0]
 
 	var swagConfig SiteConfig
 	config, err := ioutil.ReadFile("swag.conf")
