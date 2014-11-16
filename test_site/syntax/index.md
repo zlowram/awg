@@ -1,0 +1,1 @@
+Please, use the menu to navigate to the elements you want to know their syntax.

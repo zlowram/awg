@@ -1,0 +1,15 @@
+body {
+    font-family: monospace;
+    margin: auto auto;
+    width: 80ch;
+    background: #000000;
+    color: #FFFFFF;
+}
+
+a {
+    color: #FFFFFF;
+}
+
+a:visited {
+    color: #FFFFFF;
+}
