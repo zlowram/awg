@@ -24,10 +24,10 @@ type SiteConfig struct {
 }
 
 type Header struct {
-	Style   string
-	Title   string
-	Logo    string
-	IsIndex bool
+	Style    string
+	Title    string
+	Logo     string
+	HomePath string
 }
 
 type Page struct {
@@ -36,15 +36,14 @@ type Page struct {
 	Body   string
 }
 
-func generateMenu(files []os.FileInfo, isIndex bool) string {
+func generateMenu(files []os.FileInfo, homePath string) string {
 	var m []MenuItem
 
-	if !isIndex {
+	if homePath != "" {
 		m = append(m, MenuItem{Name: ".", Link: "index.html"})
 		m = append(m, MenuItem{Name: "..", Link: "../index.html"})
-	} else {
-		m = append(m, MenuItem{Name: "Home", Link: "index.html"})
 	}
+	m = append(m, MenuItem{Name: "home", Link: homePath + "index.html"})
 
 	for _, f := range files {
 		if strings.HasPrefix(f.Name(), "index") {
@@ -91,7 +90,7 @@ func generatePage(site Page) string {
 
 func generateSite(header Header, inputDir string, outputDir string) {
 	files, _ := ioutil.ReadDir(inputDir)
-	menu := generateMenu(files, header.IsIndex)
+	menu := generateMenu(files, header.HomePath)
 
 	for _, f := range files {
 		if f.IsDir() {
@@ -99,7 +98,7 @@ func generateSite(header Header, inputDir string, outputDir string) {
 				fmt.Println(err)
 			}
 
-			header.IsIndex = false
+			header.HomePath = header.HomePath + "../"
 			generateSite(header, inputDir+"/"+f.Name(), outputDir+"/"+f.Name())
 			continue
 		}
@@ -158,10 +157,10 @@ func main() {
 	}
 
 	generateSite(Header{
-		Style:   string(style),
-		Logo:    string(logo),
-		Title:   swagConfig.Title,
-		IsIndex: true,
+		Style:    string(style),
+		Logo:     string(logo),
+		Title:    swagConfig.Title,
+		HomePath: "",
 	}, siteDir, outputDir)
 }
 
