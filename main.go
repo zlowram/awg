@@ -247,16 +247,18 @@ const pageSkeleton = `
 <title>{{.Header.Title}}</title>
 </head>
 <body>
-<pre style="text-align: center;">
+<pre id="header">
 
 
 {{.Header.Logo}}
+</pre>
+<pre id="menu">
 {{.Menu}}
 </pre>
-<pre>
+<pre id="body">
 {{.Body}}
 </pre>
-<pre style="text-align: right;">
+<pre id="footer">
 
 
 Powered by <a href="http://github.com/zlowram/swag">swag</a>
