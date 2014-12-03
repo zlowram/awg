@@ -12,9 +12,10 @@ import (
 	"text/template"
 )
 
-type MenuItem struct {
-	Name string
-	Link string
+type DirItem struct {
+	Name  string
+	Link  string
+	IsDir bool
 }
 
 type SiteConfig struct {
@@ -36,14 +37,8 @@ type Page struct {
 	Body   string
 }
 
-func generateMenu(files []os.FileInfo, homePath string) string {
-	var m []MenuItem
-
-	if homePath != "" {
-		m = append(m, MenuItem{Name: ".", Link: "index.html"})
-		m = append(m, MenuItem{Name: "..", Link: "../index.html"})
-	}
-	m = append(m, MenuItem{Name: "home", Link: homePath + "index.html"})
+func dirList(files []os.FileInfo) []DirItem {
+    var list []DirItem
 
 	for _, f := range files {
 		if strings.HasPrefix(f.Name(), "index") {
@@ -52,37 +47,40 @@ func generateMenu(files []os.FileInfo, homePath string) string {
 		fname := strings.Split(f.Name(), ".")[0]
 
 		if f.IsDir() {
-			m = append(m, MenuItem{Name: fname, Link: fname + "/index.html"})
+            list = append(list, DirItem{Name: fname, Link: fname + "/index.html", IsDir: true})
 		} else {
-			m = append(m, MenuItem{Name: fname, Link: fname + ".html"})
+            list = append(list, DirItem{Name: fname, Link: fname + ".html", IsDir: false})
 		}
 	}
+    return list
+}
+
+func generateMenu(files []os.FileInfo, homePath string) string {
+	var menu []DirItem
+
+	if homePath != "" {
+		menu = append(menu, DirItem{Name: ".", Link: "index.html"})
+		menu = append(menu, DirItem{Name: "..", Link: "../index.html"})
+	}
+	menu = append(menu, DirItem{Name: "home", Link: homePath + "index.html"})
+
+    dlist := dirList(files)
+
+    menu = append_list(menu, dlist)
 
 	ret := &bytes.Buffer{}
-	if err := menuTemplate.Execute(ret, m); err != nil {
+	if err := menuTemplate.Execute(ret, menu); err != nil {
 		fmt.Println(err)
 	}
 	return ret.String()
 }
 
 func generateIndex(header Header, menu string, files []os.FileInfo, outputDir string) {
-	var m []MenuItem
 
-	for _, f := range files {
-		if strings.HasPrefix(f.Name(), "index") {
-			continue
-		}
-		fname := strings.Split(f.Name(), ".")[0]
-
-		if f.IsDir() {
-			m = append(m, MenuItem{Name: fname + "/", Link: fname + "/index.html"})
-		} else {
-			m = append(m, MenuItem{Name: fname, Link: fname + ".html"})
-		}
-	}
+    dlist := dirList(files)
 
 	body := &bytes.Buffer{}
-	if err := indexTemplate.Execute(body, m); err != nil {
+	if err := indexTemplate.Execute(body, dlist); err != nil {
 		fmt.Println(err)
 	}
 
@@ -211,6 +209,13 @@ func containsFile(s []os.FileInfo, e string) bool {
 		}
 	}
 	return false
+}
+
+func append_list(a []DirItem, b []DirItem) []DirItem {
+    for _, i := range b {
+        a = append(a, i)
+    }
+    return a
 }
 
 func usage() {
