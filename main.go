@@ -65,6 +65,38 @@ func generateMenu(files []os.FileInfo, homePath string) string {
 	return ret.String()
 }
 
+func generateIndex(header Header, menu string, files []os.FileInfo, outputDir string) {
+	var m []MenuItem
+
+	for _, f := range files {
+		if strings.HasPrefix(f.Name(), "index") {
+			continue
+		}
+		fname := strings.Split(f.Name(), ".")[0]
+
+		if f.IsDir() {
+			m = append(m, MenuItem{Name: fname + "/", Link: fname + "/index.html"})
+		} else {
+			m = append(m, MenuItem{Name: fname, Link: fname + ".html"})
+		}
+	}
+
+	body := &bytes.Buffer{}
+	if err := indexTemplate.Execute(body, m); err != nil {
+		fmt.Println(err)
+	}
+
+	page := generatePage(Page{
+		Header: header,
+		Menu:   menu,
+		Body:   body.String(),
+	})
+
+	if err := ioutil.WriteFile(outputDir+"/index.html", []byte(page), 0644); err != nil {
+		fmt.Println(err)
+	}
+}
+
 func parseBody(file string) string {
 	body, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -82,7 +114,7 @@ func parseBody(file string) string {
 
 func generatePage(site Page) string {
 	ret := &bytes.Buffer{}
-	if err := siteTemplate.Execute(ret, site); err != nil {
+	if err := pageTemplate.Execute(ret, site); err != nil {
 		fmt.Println(err)
 	}
 	return ret.String()
@@ -90,7 +122,15 @@ func generatePage(site Page) string {
 
 func generateSite(header Header, inputDir string, outputDir string) {
 	files, _ := ioutil.ReadDir(inputDir)
-	menu := generateMenu(files, header.HomePath)
+	var menu string
+
+	if !containsFile(files, "index") {
+		files, _ = ioutil.ReadDir(inputDir)
+		menu = generateMenu([]os.FileInfo{}, header.HomePath)
+		generateIndex(header, menu, files, outputDir)
+	} else {
+		menu = generateMenu(files, header.HomePath)
+	}
 
 	for _, f := range files {
 		if f.IsDir() {
@@ -164,6 +204,15 @@ func main() {
 	}, siteDir, outputDir)
 }
 
+func containsFile(s []os.FileInfo, e string) bool {
+	for _, a := range s {
+		if strings.Split(a.Name(), ".")[0] == e {
+			return true
+		}
+	}
+	return false
+}
+
 func usage() {
 	fmt.Println("Usage: swag <site_dir>")
 }
@@ -174,9 +223,17 @@ const menuASCII = `
 --{{range .}}| <a href="{{.Link}}">{{.Name}}</a> {{end}}|--
 `
 
-var siteTemplate = template.Must(template.New("site").Parse(siteSkeleton))
+var indexTemplate = template.Must(template.New("index").Parse(indexSkeleton))
 
-const siteSkeleton = `
+const indexSkeleton = `
+{{range .}}* <a href="{{.Link}}">{{.Name}}</a>
+
+{{end}}
+`
+
+var pageTemplate = template.Must(template.New("site").Parse(pageSkeleton))
+
+const pageSkeleton = `
 <html>
 <head>
 <style>
