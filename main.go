@@ -231,7 +231,7 @@ const menuASCII = `
 var indexTemplate = template.Must(template.New("index").Parse(indexSkeleton))
 
 const indexSkeleton = `
-{{range .}}* <a href="{{.Link}}">{{.Name}}</a>
+{{range .}}* <a href="{{.Link}}">{{.Name}}{{if .IsDir}}/{{end}}</a>
 
 {{end}}
 `
