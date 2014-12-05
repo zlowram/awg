@@ -22,6 +22,7 @@ type SiteConfig struct {
 	Title string
 	Logo  string
 	Style string
+	Lib   string
 }
 
 type Header struct {
@@ -29,6 +30,7 @@ type Header struct {
 	Title    string
 	Logo     string
 	HomePath string
+	Lib      string
 }
 
 type Page struct {
@@ -38,7 +40,7 @@ type Page struct {
 }
 
 func dirList(files []os.FileInfo) []DirItem {
-    var list []DirItem
+	var list []DirItem
 
 	for _, f := range files {
 		if strings.HasPrefix(f.Name(), "index") {
@@ -47,12 +49,12 @@ func dirList(files []os.FileInfo) []DirItem {
 		fname := strings.Split(f.Name(), ".")[0]
 
 		if f.IsDir() {
-            list = append(list, DirItem{Name: fname, Link: fname + "/index.html", IsDir: true})
+			list = append(list, DirItem{Name: fname, Link: fname + "/index.html", IsDir: true})
 		} else {
-            list = append(list, DirItem{Name: fname, Link: fname + ".html", IsDir: false})
+			list = append(list, DirItem{Name: fname, Link: fname + ".html", IsDir: false})
 		}
 	}
-    return list
+	return list
 }
 
 func generateMenu(files []os.FileInfo, homePath string) string {
@@ -64,9 +66,9 @@ func generateMenu(files []os.FileInfo, homePath string) string {
 	}
 	menu = append(menu, DirItem{Name: "home", Link: homePath + "index.html"})
 
-    dlist := dirList(files)
+	dlist := dirList(files)
 
-    menu = append_list(menu, dlist)
+	menu = append_list(menu, dlist)
 
 	ret := &bytes.Buffer{}
 	if err := menuTemplate.Execute(ret, menu); err != nil {
@@ -77,7 +79,7 @@ func generateMenu(files []os.FileInfo, homePath string) string {
 
 func generateIndex(header Header, menu string, files []os.FileInfo, outputDir string) {
 
-    dlist := dirList(files)
+	dlist := dirList(files)
 
 	body := &bytes.Buffer{}
 	if err := indexTemplate.Execute(body, dlist); err != nil {
@@ -198,6 +200,7 @@ func main() {
 		Style:    string(style),
 		Logo:     string(logo),
 		Title:    swagConfig.Title,
+		Lib:      swagConfig.Lib,
 		HomePath: "",
 	}, siteDir, outputDir)
 }
@@ -212,10 +215,10 @@ func containsFile(s []os.FileInfo, e string) bool {
 }
 
 func append_list(a []DirItem, b []DirItem) []DirItem {
-    for _, i := range b {
-        a = append(a, i)
-    }
-    return a
+	for _, i := range b {
+		a = append(a, i)
+	}
+	return a
 }
 
 func usage() {
@@ -245,6 +248,7 @@ const pageSkeleton = `
 {{.Header.Style}}
 </style>
 <title>{{.Header.Title}}</title>
+{{.Header.Lib}}
 </head>
 <body>
 <pre id="header">
