@@ -6,4 +6,4 @@ In order to include links in your site, you can use the link helper tag (without
 
 Example of output:
 
-The official swag project page is on (github)[http://github.com/zlowram/swag].
+The official awg project page is on (github)[http://github.com/zlowram/awg].

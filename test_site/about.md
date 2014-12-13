@@ -1,5 +1,5 @@
-SWAG - Suckless Web-ASCII Generator
------------------------------------
+AWG - ASCII Web Generator 
+-------------------------
 
-Minimalist web framework for generating ASCII websites.
+Minimalist web framework for generating static ASCII websites.
 

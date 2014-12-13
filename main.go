@@ -168,13 +168,13 @@ func main() {
 	}
 	siteDir := strings.Split(flag.Arg(0), "/")[0]
 
-	var swagConfig SiteConfig
-	config, err := ioutil.ReadFile("swag.conf")
+	var awgConfig SiteConfig
+	config, err := ioutil.ReadFile("awg.conf")
 	if err != nil {
 		fmt.Println(err)
 	}
 	dec := json.NewDecoder(bytes.NewReader(config))
-	if err := dec.Decode(&swagConfig); err != nil {
+	if err := dec.Decode(&awgConfig); err != nil {
 		fmt.Println(err)
 	}
 
@@ -186,12 +186,12 @@ func main() {
 		fmt.Println(err)
 	}
 
-	style, err := ioutil.ReadFile(swagConfig.Style)
+	style, err := ioutil.ReadFile(awgConfig.Style)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	logo, err := ioutil.ReadFile(swagConfig.Logo)
+	logo, err := ioutil.ReadFile(awgConfig.Logo)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -199,8 +199,8 @@ func main() {
 	generateSite(Header{
 		Style:    string(style),
 		Logo:     string(logo),
-		Title:    swagConfig.Title,
-		Lib:      swagConfig.Lib,
+		Title:    awgConfig.Title,
+		Lib:      awgConfig.Lib,
 		HomePath: "",
 	}, siteDir, outputDir)
 }
@@ -222,7 +222,7 @@ func append_list(a []DirItem, b []DirItem) []DirItem {
 }
 
 func usage() {
-	fmt.Println("Usage: swag <site_dir>")
+	fmt.Println("Usage: awg <site_dir>")
 }
 
 var menuTemplate = template.Must(template.New("menu").Parse(menuASCII))
@@ -265,7 +265,7 @@ const pageSkeleton = `
 <pre id="footer">
 
 
-Powered by <a href="http://github.com/zlowram/swag">swag</a>
+Powered by <a href="http://github.com/zlowram/awg">awg</a>
 </pre>
 </body>
 </html>

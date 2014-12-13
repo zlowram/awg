@@ -1,18 +1,18 @@
-SWAG - Suckless Web-ASCII Generator
-===================================
+AWG - Ascii Web Generator
+=========================
 
-Minimalist web framework for generating ASCII websites.
+Minimalist web framework for generating static ASCII websites.
 
 Installation
 ---------
-	$ go get github.com/zlowram/swag
+	$ go get github.com/zlowram/awg
 
 Usage
 -----
-	$ swag <site_dir>
+	$ awg <site_dir>
 	
 Documentation
 ------------
-	$ swag test_site
+	$ awg test_site
 	$ firefox test_site.static/index.html
 

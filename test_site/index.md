@@ -1,4 +1,4 @@
-Welcome to SWAG, dear user!
+Welcome to AWG, dear user!
 
 If you are reading this it means you already know how to use the CLI program in
 order to generate a site. Please, read further in order to know how to create a
@@ -7,13 +7,13 @@ site and the basic syntax.
 The config file
 ---------------
 
-The configuration for each site must be defined in the swag.conf file. The
+The configuration for each site must be defined in the awg.conf file. The
 config file for this site is the following:
 
---- swag.conf -----------------------
+--- awg.conf -----------------------
 
 {
-    "Title":    "SWAG docs",
+    "Title":    "awg docs",
     "Logo":     "logo.txt",
     "Style":    "themes/dark.css"
 }
