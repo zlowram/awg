@@ -61,10 +61,10 @@ func generateMenu(files []os.FileInfo, homePath string) string {
 	var menu []DirItem
 
 	if homePath != "" {
-		menu = append(menu, DirItem{Name: ".", Link: "index.html"})
-		menu = append(menu, DirItem{Name: "..", Link: "../index.html"})
+		menu = append(menu, DirItem{Name: "~/", Link: homePath + "index.html"})
+		menu = append(menu, DirItem{Name: "./", Link: "index.html"})
+		menu = append(menu, DirItem{Name: "../", Link: "../index.html"})
 	}
-	menu = append(menu, DirItem{Name: "home", Link: homePath + "index.html"})
 
 	dlist := dirList(files)
 
@@ -228,7 +228,7 @@ func usage() {
 var menuTemplate = template.Must(template.New("menu").Parse(menuASCII))
 
 const menuASCII = `
---{{range .}}| <a href="{{.Link}}">{{.Name}}</a> {{end}}|--
+--|{{range .}} <a href="{{.Link}}">{{.Name}}</a> {{end}}|--
 `
 
 var indexTemplate = template.Must(template.New("index").Parse(indexSkeleton))
