@@ -1,4 +1,5 @@
-In order to include an image in your site, you can use the image helper tag (without blankspaces):
+In order to include an image in your site, you can use the image helper tag
+(without blankspaces):
 
 [ [path/to/img] ]
 

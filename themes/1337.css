@@ -6,6 +6,18 @@ body {
     color: #00FF00;
 }
 
+#header {
+    text-align: center;
+}
+
+#menu {
+    text-align: center;
+}
+
+#footer {
+    text-align: right;
+}
+
 a {
     color: #00FF00;
 }
@@ -13,3 +25,9 @@ a {
 a:visited {
     color: #00FF00;
 }
+
+
+/* javascript code prettifier */
+
+pre.prettyprint { display: block; padding: 10px; background-color: #333 !important}
+pre.nocode { color: #fff !important }

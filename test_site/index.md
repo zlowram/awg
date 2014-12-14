@@ -10,15 +10,15 @@ The config file
 The configuration for each site must be defined in the awg.conf file. The
 config file for this site is the following:
 
---- awg.conf -----------------------
-
+<pre class="prettyprint">
 {
-    "Title":    "awg docs",
+    "Title":    "AWG docs",
     "Logo":     "logo.txt",
-    "Style":    "themes/dark.css"
+    "Style":    "themes/dark.css",
+    "Lib":      "&lt;script src='https://google-code-prettify.googlecode.com/svn/
+                 loader/run_prettify.js?skin=desert'&gt;&lt;/script&gt;" 
 }
-
--------------------------------------
+</pre>
 
 Title, as the name itself says, defines the title of the site to be generated.
 This will appear between the "title" tags in the header of the resulting HTML
@@ -28,6 +28,8 @@ Logo, defines the file where the ASCII logo of the site is stored.
 
 Style, defines the stylesheet to be used on the generated site. You can find 3
 basic styles in the theme folder. 
+
+Finally, Lib defines the javascript lib to be used. Read more about it (here)[syntax/libraries.md].
 
 The menu
 --------

@@ -1,4 +1,5 @@
-In order to include links in your site, you can use the link helper tag (without blankspaces):
+In order to include links in your site, you can use the link helper tag
+(without blankspaces):
 
 (link_description) [URL]
 
